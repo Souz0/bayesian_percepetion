@@ -43,16 +43,18 @@ def experiment_simulation(p_common, mu_p, sigma_p, sigma_v, sigma_a, trials):
 
     # ** STUDENT: MODIFY THE FOLLOWING CODE **
 
-    # Generate values for C="actual number of sources"
-    real_C_exp = [2, 1, 2, 2, 1, 2,
-                  2, 2, 2, 2]
+    rand_num = np.random.default_rng()
+    real_C_exp = rand_num.binomial(n=1,p=p_common, size=trials) + 1
 
-    # Generate values for actual positions s_v
-    real_s_v_exp = [67.05291288, -28.70256673, -34.09727719,  -6.18410833, -24.12022189, 5.28966676,
-                    25.44858823, -56.61318633, -73.38180863,  -1.13799968]
-    # Generate values for actual positions s_a depending on C
-    real_s_a_exp = [-60.36824778, -28.70256673, -46.5115546,  -11.19114518, -24.12022189, 4.20133326,
-                    -4.51165411, -38.39973663,  -6.85438526,  12.05883616]
+    real_s_v_exp = rand_num.normal(loc=mu_p, scale=sigma_p, size=trials)
+    real_s_a_exp = np.zeros(trials)
+
+    for i in real_C_exp:
+        if real_C_exp[i] == 1:
+            real_s_a_exp[i] = real_s_v_exp[i]
+        else:
+            real_s_a_exp[i] = rand_num.normal(loc=mu_p, scale=sigma_p)
+
 
     # Generate values for sensor readings x_v and x_a
     x_v_exp = [66.67882581, -22.77401193, -35.51333239,  -3.60377774, -27.11689493, 3.89019706,
