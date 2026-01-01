@@ -91,6 +91,7 @@ def main():
             plot_estimates(mu_p, sigma_p, s_v, sigma_v, s_a, sigma_a, # prior and partials
                         p_single_source, s_v_est, s_a_est)         # estimates
 
+
         # Contribution to confusion matrix for C
         est_C = int(p_single_source <= 0.5) + 1 # est_C = estimation for C given p_single_source
 

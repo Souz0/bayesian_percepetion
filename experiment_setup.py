@@ -57,10 +57,8 @@ def experiment_simulation(p_common, mu_p, sigma_p, sigma_v, sigma_a, trials):
 
 
     # Generate values for sensor readings x_v and x_a
-    x_v_exp = [66.67882581, -22.77401193, -35.51333239,  -3.60377774, -27.11689493, 3.89019706,
-               22.09542342, -57.54700037, -73.6804078,   -1.19810806]
-    x_a_exp = [-61.64881471, -22.94509021, -68.44495372,  -5.80229447, -30.48549829, 5.08876483,
-               7.49946491, -48.13228536, -12.9603089,    0.61332267]
+    x_v_exp = rand_num.normal(loc = real_s_v_exp, scale = sigma_v, size = trials)
+    x_a_exp = rand_num.normal(loc = real_s_a_exp, scale = sigma_a, size = trials)
     
     ## ** STUDENT: END OF MODIFIED CODE **
 
