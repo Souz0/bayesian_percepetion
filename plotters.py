@@ -259,7 +259,7 @@ def plot_simple_performance_metrics(conf_mat_C, mae_v, mae_a, mas_v, mas_a):
     ax = plt.gca()
     # Set the context with a specific size
     sns.set_context(rc={"figure.figsize": (3, 4)})
-    sns.barplot(x=mae_labels, y=mae_values, palette=["blue", "green"])
+    sns.barplot(x=mae_labels, y=mae_values, hue=mae_labels, palette=["blue", "green"], legend=False)
     # add the annotation
     ax.bar_label(ax.containers[0], fmt='Mean: %.2f\u00b0', label_type='center', color='white')
     plt.title("Mean Absolute Errors (MAE)")
@@ -273,7 +273,7 @@ def plot_simple_performance_metrics(conf_mat_C, mae_v, mae_a, mas_v, mas_a):
     ax = plt.gca()
     # Set the context with a specific size
     sns.set_context(rc={"figure.figsize": (3, 4)})    
-    sns.barplot(x=mae_labels, y=mas_values, palette=["blue", "green"])
+    sns.barplot(x=mae_labels, y=mas_values, hue=mae_labels, palette=["blue", "green"], legend=False)
     # add the annotation
     ax.bar_label(ax.containers[0], fmt='Mean: %.2f\u00b0', label_type='center', color='white')
     plt.title("Mean Absolute Shifts (MAS)")

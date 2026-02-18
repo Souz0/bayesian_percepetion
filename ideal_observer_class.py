@@ -43,7 +43,7 @@ class IdealObserver:
         self._mu_p     = mu_p       # prior mean
         self._sigma_p  = sigma_p    # prior std
         self._p_common = p_common   # probability of perceiving a common cause for visual and auditory stimuli
-        self._sigma_v  = sigma_v    # auditory std
+        self._sigma_v  = sigma_v    # visual std
         self._sigma_a  = sigma_a    # auditory std
         pass
 
@@ -198,7 +198,7 @@ class IdealObserver:
         s_v, _ = self._calculate_v_estimate_params(x_v)
 
         # Calculate separate auditory ideal estimate parameters
-        s_a, _ = self._calculate_v_estimate_params(x_a)
+        s_a, _ = self._calculate_a_estimate_params(x_a)
     
         # Calculate joint visuo-auditory ideal estimate
         s_va = self._calculate_joint_va_estimate_params(x_v, x_a)

@@ -61,7 +61,7 @@ def main():
     sigma_a   = 9.2   # Standard deviation for auditory models (degrees)
 
     # Define experimental conditions
-    trials   = 10    # number of trials in the experiment
+    trials   = 1000    # number of trials in the experiment
     p_com_exp = 0.5     # (uniform) prior for generating a common cause for visual and auditory stimuli
                         # in experiment
 
@@ -120,14 +120,43 @@ def main():
     mae_a /= trials
     mas_v /= trials
     mas_a /= trials
-    conf_mat_C = np.array(conf_mat_C)
-    conf_mat_C = np.divide(conf_mat_C, float(trials/100))
+
+    # Calculate C accuracy FIRST using the ORIGINAL counts
+    C_accuracy = (conf_mat_C[0][0] + conf_mat_C[1][1]) / trials * 100
+
+    # Now convert the confusion matrix
+    conf_mat_C_counts = np.array(conf_mat_C)  # This is the ORIGINAL counts
+    conf_mat_C_percent = np.array(conf_mat_C)  # Create a copy
+    conf_mat_C_percent = np.divide(conf_mat_C_percent, float(trials / 100))  # Convert to percentages
 
     # Show results
-    plot_simple_performance_metrics(conf_mat_C, mae_v, mae_a, mas_v, mas_a)
+    if trials<=10:
+        plot_simple_performance_metrics(conf_mat_C_percent, mae_v, mae_a, mas_v, mas_a)
+    else:
+        print("\nCONFUSION MATRIX FOR C (Number of Sources):")
+        print(f"                    Estimated C=1   Estimated C=2")
+        print(
+            f"True C=1 (Common):   {int(conf_mat_C_counts[0, 0]):6d} ({conf_mat_C_percent[0, 0]:5.1f}%)   {int(conf_mat_C_counts[0, 1]):6d} ({conf_mat_C_percent[0, 1]:5.1f}%)")
+        print(
+            f"True C=2 (Separate): {int(conf_mat_C_counts[1, 0]):6d} ({conf_mat_C_percent[1, 0]:5.1f}%)   {int(conf_mat_C_counts[1, 1]):6d} ({conf_mat_C_percent[1, 1]:5.1f}%)")
+        print(f"\nC Accuracy: {C_accuracy:.1f}%")
 
-    # ** STUDENT: ADD ANY OPTIONAL METRICS HERE **
+        print(f"Mean Absolute Error (MAE):")
+        print(f"  Visual:   {mae_v:6.2f}°")
+        print(f"  Auditory: {mae_a:6.2f}°")
 
+        print(f"\nMean Absolute Shift (MAS) - Ventriloquist Effect:")
+        print(f"  Visual shift:   {mas_v:6.2f}°")
+        print(f"  Auditory shift: {mas_a:6.2f}°")
+
+        # Ventriloquism strength (how much sound is pulled toward vision)
+        ventriloquism_strength = mas_a / (sigma_a) * 100  # as percentage of auditory noise
+        print(f"\nVentriloquism Strength: {ventriloquism_strength:.1f}% of auditory noise")
+
+        # Precision ratio (visual vs auditory)
+        precision_ratio = (sigma_a ** 2) / (sigma_v ** 2)
+        print(
+            f"Visual/Auditory Precision Ratio: {precision_ratio:.1f}x (Vision is {precision_ratio:.0f}x more precise)")
 
 
 if __name__ == "__main__":
